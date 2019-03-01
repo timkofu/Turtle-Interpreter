@@ -1,0 +1,10 @@
+turtle tom
+colour tom red
+move tom 350
+left tom 90
+pen tom up
+mov tom 100
+pen tom down
+left tom 90
+colour tom blue
+move tom 350

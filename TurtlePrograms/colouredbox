@@ -1,0 +1,12 @@
+turtle tom
+colour tom red
+move tom 350
+left tom 90
+colour tom blue
+move tom 350
+left tom 90
+colour tom cyan
+move tom 350
+left tom 90
+colour tom orange
+move tom 350

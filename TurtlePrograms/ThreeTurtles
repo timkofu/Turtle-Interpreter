@@ -1,0 +1,37 @@
+turtle tom
+colour tom blue
+pen tom up
+move tom 200
+pen tom down
+move tom 100
+left tom 90
+move tom 100
+left tom 90
+move tom 100
+left tom 90
+move tom 100
+turtle tim
+colour tim red
+pen tim up
+right tim 90
+move tim 150
+pen tim down
+right tim 45
+move tim 100
+right tim 90
+move tim 100
+right tim 90
+move tim 100
+right tim 90
+move tim 100
+turtle fred
+colour fred orange
+left fred 90
+pen fred up
+move fred 100
+pen fred down
+move fred 100
+right fred 135
+move fred 100
+right fred 135
+move fred 100
