@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# First: git config core.hooksPath `pwd`/.gitHooks
+
+# Copy jar file to repo root
+# JAR_FILE=Turtle-Interpreter/target/Turtle-Interpreter-0.1.0.jar
+
+# cp ${JAR_FILE} .
+# EXIT_CODES=( $? )
+# git add -A
+# EXIT_CODES+=( $? )
+
+# for e in ${EXIT_CODES[@]}; do
+#    if [[ $e -gt 0 ]]
+#    then
+#        exit 1
+#    fi
+# done
