@@ -1,4 +1,4 @@
-package name.hamdan.turtleinterpreter;
+package TurtleInterpreter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,10 +20,10 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
     Scanner in = null;
     boolean redraw;
     private List<Turtle> TurtleList;
-    //   private JTextField console = new JTextField();
+    // private JTextField console = new JTextField();
 
     public TurtleInterpreter() {
-        //add(console);
+        // add(console);
         TurtleList = new LinkedList<Turtle>();
         setPreferredSize(new Dimension(FrameWidth, FrameHeight));
         image = new BufferedImage(FrameWidth, FrameHeight, BufferedImage.TYPE_INT_RGB);
@@ -62,15 +62,15 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
         g.drawImage(image, 0, 0, null);
         if (TurtleList.size() != 0) {
             for (Turtle t : TurtleList) {
-                g.drawImage(t.getImage(), (t.getLocX2() - 15) + FrameWidth / 2, -(t.getLocY2() + 15) + FrameHeight / 2, 30, 30, this);
+                g.drawImage(t.getImage(), (t.getLocX2() - 15) + FrameWidth / 2, -(t.getLocY2() + 15) + FrameHeight / 2,
+                        30, 30, this);
             }
         }
     }
 
-
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        if (s.equals("Open File")) {    // read input commands from a text file
+        if (s.equals("Open File")) { // read input commands from a text file
             JFileChooser chooser = new JFileChooser();
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = chooser.getSelectedFile();
@@ -88,7 +88,7 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
         }
     }
 
-    public Color ToColor(String s) {            // only five colors are allowed
+    public Color ToColor(String s) { // only five colors are allowed
         switch (s) {
             case "red":
                 return Color.RED;
@@ -101,7 +101,7 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
             case "orange":
                 return Color.ORANGE;
         }
-        return Color.BLACK;  //default
+        return Color.BLACK; // default
     }
 
     void processfile(Scanner in) {
@@ -135,7 +135,8 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
                                 t.setDelta(Integer.parseInt(line[2]));
                                 t.MoveForward(t.getDelta(), FrameWidth / 2, FrameHeight / 2);
                                 if (t.getWriting()) {
-                                    drawLine(t, t.getLocX1() + FrameWidth / 2, -t.getLocY1() + FrameHeight / 2, t.getLocX2() + FrameWidth / 2, -t.getLocY2() + FrameHeight / 2);
+                                    drawLine(t, t.getLocX1() + FrameWidth / 2, -t.getLocY1() + FrameHeight / 2,
+                                            t.getLocX2() + FrameWidth / 2, -t.getLocY2() + FrameHeight / 2);
                                 }
                                 t.setLocX1(t.getLocX2()); // update Turtle position
                                 t.setLocY1(t.getLocY2());
@@ -202,12 +203,14 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
                         break;
 
                     default:
-                        JOptionPane.showMessageDialog(this, "Line " + lineNumber + " : Invalid command, Program Terminated");
+                        JOptionPane.showMessageDialog(this,
+                                "Line " + lineNumber + " : Invalid command, Program Terminated");
                         terminate = true;
                 }
             }
 
-            if (redraw) repaint();
+            if (redraw)
+                repaint();
             lineNumber++;
         }
     }

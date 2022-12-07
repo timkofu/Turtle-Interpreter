@@ -1,4 +1,4 @@
-package name.hamdan.turtleinterpreter;
+package TurtleInterpreter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,14 +15,13 @@ import java.net.URI;
 public class Turtle extends JComponent {
     boolean writing;
     boolean draw;
-    double angle;  // rotation angle
+    double angle; // rotation angle
     private String name;
     private int LocX1, LocY1, LocX2, LocY2;
     private Color color;
     private double heading;
     private int delta;
     private BufferedImage bimg = null; // our PNG image of turtle
-
 
     public Turtle(String name, int x, int y) {
         this.name = name;
@@ -32,23 +31,22 @@ public class Turtle extends JComponent {
         LocY2 = 0;
         angle = 0; // rotation angle
         writing = true; // default pen down
-        color = Color.BLACK;     // default color
-        heading = 90;           // default facing north, 90 degrees
+        color = Color.BLACK; // default color
+        heading = 90; // default facing north, 90 degrees
         delta = 0;
         draw = true;
         try {
             String imagePath = "Images/TurtleBlue.png";
             InputStream imageStream = getClass().getClassLoader().getResourceAsStream(imagePath);
-            if (imageStream == null){
+            if (imageStream == null) {
                 throw new IllegalArgumentException(imagePath + " not found.");
             }
-//            bimg = ImageIO.read(new File("./Images/TurtleBlue.png"));
+            // bimg = ImageIO.read(new File("./Images/TurtleBlue.png"));
             bimg = ImageIO.read(imageStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     public String getName() {
         return name;
@@ -85,7 +83,7 @@ public class Turtle extends JComponent {
         tx.rotate(Math.toRadians(angle), w / 2, h / 2);//
 
         op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-        bimg = op.filter(bimg, null); //(sourse,destination)
+        bimg = op.filter(bimg, null); // (sourse,destination)
     }
 
     public boolean getWriting() {
@@ -134,19 +132,20 @@ public class Turtle extends JComponent {
     public void TurnRight(double angle) {
         this.angle = angle;
         heading -= angle;
-        if (heading < 0) heading = heading + 360;
+        if (heading < 0)
+            heading = heading + 360;
     }
 
     public void MoveForward(int delta, int FrameW, int FrameH) {
         LocX2 = LocX1 + (int) (delta * Math.cos(Math.toRadians(heading)));
         LocY2 = LocY1 + (int) (delta * Math.sin(Math.toRadians(heading)));
 
-        if (LocX2 > FrameW)    // Boundary checks and clipping
+        if (LocX2 > FrameW) // Boundary checks and clipping
             LocX2 = FrameW;
         if (LocX2 < -FrameW)
             LocX2 = -FrameW;
 
-        if (LocY2 > FrameH)    // Boundary checks and clipping
+        if (LocY2 > FrameH) // Boundary checks and clipping
             LocY2 = FrameH;
         if (LocY2 < -FrameH)
             LocY2 = -FrameH;

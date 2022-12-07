@@ -1,4 +1,4 @@
-package name.hamdan.turtleinterpreter;
+package TurtleInterpreter;
 
 import javax.swing.*;
 import java.io.IOException;
