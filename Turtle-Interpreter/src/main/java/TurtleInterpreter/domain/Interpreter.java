@@ -1,4 +1,4 @@
-package TurtleInterpreter;
+package TurtleInterpreter.domain;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TurtleInterpreter extends JPanel implements ActionListener {
+import TurtleInterpreter.userInterface.Turtle;
+
+public class Interpreter extends JPanel implements ActionListener {
 
     private static final int FrameWidth = 800;
     private static final int FrameHeight = 800;
@@ -22,7 +24,7 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
     private List<Turtle> TurtleList;
     // private JTextField console = new JTextField();
 
-    public TurtleInterpreter() {
+    public Interpreter() {
         // add(console);
         TurtleList = new LinkedList<Turtle>();
         setPreferredSize(new Dimension(FrameWidth, FrameHeight));
@@ -77,7 +79,6 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
                 try {
                     in = new Scanner(selectedFile);
                 } catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
@@ -116,7 +117,7 @@ public class TurtleInterpreter extends JPanel implements ActionListener {
 
                 terminate = true;
             } else {
-                Iterator itr = TurtleList.iterator();
+                Iterator<?> itr = TurtleList.iterator();
 
                 switch (line[0]) {
                     case "turtle":

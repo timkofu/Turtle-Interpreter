@@ -1,3 +1,7 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "markdown.extension.preview.autoShowPreviewToSide": true,
+    "cSpell.ignorePaths": [
+        "**/*",
+        "!*.md"
+    ]
 }

@@ -1,4 +1,4 @@
-package TurtleInterpreter;
+package TurtleInterpreter.userInterface;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -6,9 +6,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
 
 // Need a separate class for Turtle to separate the logic/data from graphics and animation
 
@@ -72,7 +70,7 @@ public class Turtle extends JComponent {
         delta = d;
     }
 
-    void rotateTurtle() {
+    public void rotateTurtle() {
         AffineTransformOp op;
         AffineTransform tx;
 

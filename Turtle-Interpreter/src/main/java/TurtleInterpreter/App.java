@@ -1,6 +1,9 @@
 package TurtleInterpreter;
 
 import javax.swing.*;
+
+import TurtleInterpreter.domain.Interpreter;
+
 import java.io.IOException;
 
 /**
@@ -10,7 +13,7 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         JFrame f = new JFrame();
-        TurtleInterpreter turtleInterpreter = new TurtleInterpreter();
+        Interpreter turtleInterpreter = new Interpreter();
         JButton b = new JButton("Open File");
         turtleInterpreter.add(b);
         b.addActionListener(turtleInterpreter);
