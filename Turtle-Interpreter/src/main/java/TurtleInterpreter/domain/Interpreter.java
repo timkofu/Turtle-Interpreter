@@ -1,45 +1,36 @@
 package TurtleInterpreter.domain;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-
 import TurtleInterpreter.userInterface.Turtle;
 
-public class Interpreter extends JPanel implements ActionListener {
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.awt.image.BufferedImage;
+import java.util.*;
+import java.io.IOException;
+
+public class Interpreter  extends JPanel implements ActionListener {
 
     private static final int FrameWidth = 800;
     private static final int FrameHeight = 800;
+    private  List<Turtle> TurtleList;
     private final BufferedImage image;
     Scanner in = null;
     boolean redraw;
-    private List<Turtle> TurtleList;
-    // private JTextField console = new JTextField();
+    //   private JTextField console = new JTextField();
 
     public Interpreter() {
-        // add(console);
-        TurtleList = new LinkedList<Turtle>();
+        //add(console);
+        TurtleList = new LinkedList<>();
         setPreferredSize(new Dimension(FrameWidth, FrameHeight));
         image = new BufferedImage(FrameWidth, FrameHeight, BufferedImage.TYPE_INT_RGB);
         setMaximumSize(new Dimension(image.getWidth(), image.getHeight()));
         redraw = false;
         clear();
-    }
-
-    public int getFrameHeight() {
-        return FrameHeight;
-    }
-
-    public int getFrameWidth() {
-        return FrameWidth;
     }
 
     public void clear() {
@@ -62,62 +53,61 @@ public class Interpreter extends JPanel implements ActionListener {
         super.paintComponent(g);
         // render the image on the panel.
         g.drawImage(image, 0, 0, null);
-        if (TurtleList.size() != 0) {
-            for (Turtle t : TurtleList) {
-                g.drawImage(t.getImage(), (t.getLocX2() - 15) + FrameWidth / 2, -(t.getLocY2() + 15) + FrameHeight / 2,
-                        30, 30, this);
+        if (!TurtleList.isEmpty()) {
+            for (Turtle t: TurtleList) {
+                g.drawImage(t.getImage(), (t.getLocX2()-15) + FrameWidth/2, -(t.getLocY2()+15) + FrameHeight/2, 30,30, this);
             }
         }
     }
 
-    public void actionPerformed(ActionEvent e) {
+
+    public void actionPerformed(ActionEvent e)
+    {
         String s = e.getActionCommand();
-        if (s.equals("Open File")) { // read input commands from a text file
+        if (s.equals("Open Program File")) {    // read input commands from a text file
             JFileChooser chooser = new JFileChooser();
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = chooser.getSelectedFile();
                 try {
                     in = new Scanner(selectedFile);
                 } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+                    // TODO Auto-generated catch block
+                    System.err.println(e1.getMessage());
                 }
             }
             // start over, clear screen and initialise Turtle List
             clear();
-            TurtleList = new LinkedList<Turtle>();
-            processfile(in);
+            TurtleList = new LinkedList<>();
+            processFile(in);
         }
     }
 
-    public Color ToColor(String s) { // only five colors are allowed
-        switch (s) {
-            case "red":
-                return Color.RED;
-            case "blue":
-                return Color.BLUE;
-            case "cyan":
-                return Color.CYAN;
-            case "green":
-                return Color.GREEN;
-            case "orange":
-                return Color.ORANGE;
-        }
-        return Color.BLACK; // default
+    public Color toColor(String s)
+    {
+        // Only five colors are allowed
+        return switch (s) {
+            case "red" -> Color.RED;
+            case "blue" -> Color.BLUE;
+            case "cyan" -> Color.CYAN;
+            case "green" -> Color.GREEN;
+            case "orange" -> Color.ORANGE;
+            default -> Color.BLACK;
+        };
     }
 
-    void processfile(Scanner in) {
+    void processFile(Scanner in) {
         int lineNumber = 1;
         boolean terminate = false;
         boolean done;
         final int MAX_LINES = 100; // maximum number of command lines
-        while (in.hasNextLine() && lineNumber < MAX_LINES && !terminate) {
+        while (in.hasNextLine() && lineNumber<MAX_LINES && !terminate) {
             String[] line = in.nextLine().split(" ");
-            if (line.length < 2 || line.length >= 4) {
+            if (line.length <2 || line.length >= 4) {
                 JOptionPane.showMessageDialog(this, "Line : " + lineNumber + " : Invalid command, Program Terminated");
 
                 terminate = true;
             } else {
-                Iterator<?> itr = TurtleList.iterator();
+                Iterator<Turtle> itr = TurtleList.iterator();
 
                 switch (line[0]) {
                     case "turtle":
@@ -129,15 +119,14 @@ public class Interpreter extends JPanel implements ActionListener {
                     case "move":
                         done = false;
                         while (itr.hasNext() & !done) {
-                            Turtle t = (Turtle) itr.next();
+                            Turtle t = itr.next();
                             String name = t.getName();
                             if (name.equals(line[1])) {
                                 done = true;
                                 t.setDelta(Integer.parseInt(line[2]));
-                                t.MoveForward(t.getDelta(), FrameWidth / 2, FrameHeight / 2);
+                                t.MoveForward(t.getDelta(), FrameWidth/2, FrameHeight/2);
                                 if (t.getWriting()) {
-                                    drawLine(t, t.getLocX1() + FrameWidth / 2, -t.getLocY1() + FrameHeight / 2,
-                                            t.getLocX2() + FrameWidth / 2, -t.getLocY2() + FrameHeight / 2);
+                                    drawLine(t, t.getLocX1() + FrameWidth/2, -t.getLocY1() + FrameHeight/2, t.getLocX2() + FrameWidth/2, -t.getLocY2() + FrameHeight/2);
                                 }
                                 t.setLocX1(t.getLocX2()); // update Turtle position
                                 t.setLocY1(t.getLocY2());
@@ -149,7 +138,7 @@ public class Interpreter extends JPanel implements ActionListener {
                     case "left":
                         done = false;
                         while (itr.hasNext() & !done) {
-                            Turtle t = (Turtle) itr.next();
+                            Turtle t = itr.next();
                             String name = t.getName();
                             if (name.equals(line[1])) {
                                 done = true;
@@ -163,7 +152,7 @@ public class Interpreter extends JPanel implements ActionListener {
                     case "right":
                         done = false;
                         while (itr.hasNext() & !done) {
-                            Turtle t = (Turtle) itr.next();
+                            Turtle t = itr.next();
                             String name = t.getName();
                             if (name.equals(line[1])) {
                                 done = true;
@@ -177,7 +166,7 @@ public class Interpreter extends JPanel implements ActionListener {
                     case "pen":
                         done = false;
                         while (itr.hasNext() & !done) {
-                            Turtle t = (Turtle) itr.next();
+                            Turtle t = itr.next();
                             String name = t.getName();
                             if (name.equals(line[1])) {
                                 done = true;
@@ -193,27 +182,43 @@ public class Interpreter extends JPanel implements ActionListener {
                     case "colour":
                         done = false;
                         while (itr.hasNext() & !done) {
-                            Turtle t = (Turtle) itr.next();
+                            Turtle t = itr.next();
                             String name = t.getName();
                             if (name.equals(line[1])) {
                                 done = true;
-                                t.setColor(ToColor(line[2])); // change color
+                                t.setColor(toColor(line[2])); // change color
                             }
                         }
                         redraw = false;
                         break;
 
                     default:
-                        JOptionPane.showMessageDialog(this,
-                                "Line " + lineNumber + " : Invalid command, Program Terminated");
+                        JOptionPane.showMessageDialog(this, "Line " + lineNumber + " : Invalid command, Program Terminated");
                         terminate = true;
                 }
             }
 
-            if (redraw)
-                repaint();
+            if (redraw) repaint();
             lineNumber++;
         }
     }
+
+    public void run() throws IOException  {
+        JFrame f = new JFrame();
+        JButton b = new JButton("Open Program File");
+
+        Interpreter  p = new Interpreter();
+
+
+        p.add(b);
+        b.addActionListener(p);
+        f.add(p);
+        f.setSize(FrameWidth, FrameHeight);
+        f.setResizable(false);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        f.setVisible(true);
+    }
+
 
 }

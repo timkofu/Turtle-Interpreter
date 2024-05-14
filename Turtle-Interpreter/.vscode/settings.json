@@ -1,7 +1,0 @@
-{
-    "markdown.extension.preview.autoShowPreviewToSide": true,
-    "cSpell.ignorePaths": [
-        "**/*",
-        "!*.md"
-    ]
-}
