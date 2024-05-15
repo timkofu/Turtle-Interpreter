@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.lang.Thread;
 
 // Need a separate class for Turtle to separate the logic/data from graphics and animation
 
@@ -20,12 +21,13 @@ public class Turtle extends  JComponent{
     double angle;  // rotation angle
     private int delta;
     private  BufferedImage bufferedImage = null; // our PNG image of turtle
+    private final int sleepDuration = 100;
 
 
     public Turtle(String name, int x, int y) {
         this.name= name;
-        LocX1 = 0;
-        LocY1 = 0;
+        LocX1 = x;
+        LocY1 = y;
         LocX2 = 0;
         LocY2 = 0;
         angle = 0; // rotation angle
@@ -42,6 +44,14 @@ public class Turtle extends  JComponent{
             }
             bufferedImage = ImageIO.read(imageStream);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void sleep(){
+        try{
+            Thread.sleep(sleepDuration);
+        } catch (InterruptedException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -67,8 +77,6 @@ public class Turtle extends  JComponent{
         return bufferedImage;
     }
 
-
-
     public void setDelta(int d)
     {
         delta = d;
@@ -92,6 +100,8 @@ public class Turtle extends  JComponent{
 
         op = new AffineTransformOp(tx,AffineTransformOp.TYPE_BILINEAR);
         bufferedImage =op.filter(bufferedImage,null); // (source, destination)
+
+        sleep();
     }
 
     public boolean  getWriting() {
@@ -147,6 +157,7 @@ public class Turtle extends  JComponent{
         this.angle = angle;
         heading -= angle;
         if (heading < 0) heading = heading + 360;
+        sleep();
     }
 
     public void MoveForward(int delta, int FrameW, int FrameH) {
@@ -162,6 +173,7 @@ public class Turtle extends  JComponent{
             LocY2 = FrameH;
         if (LocY2 < -FrameH)
             LocY2 = -FrameH;
+        sleep();
 
     }
 

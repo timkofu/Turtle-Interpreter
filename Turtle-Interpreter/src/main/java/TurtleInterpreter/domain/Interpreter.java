@@ -17,7 +17,7 @@ public class Interpreter  extends JPanel implements ActionListener {
 
     private static final int FrameWidth = 800;
     private static final int FrameHeight = 800;
-    private  List<Turtle> TurtleList;
+    private LinkedList<Turtle> TurtleList;
     private final BufferedImage image;
     Scanner in = null;
     boolean redraw;
@@ -56,6 +56,7 @@ public class Interpreter  extends JPanel implements ActionListener {
         if (!TurtleList.isEmpty()) {
             for (Turtle t: TurtleList) {
                 g.drawImage(t.getImage(), (t.getLocX2()-15) + FrameWidth/2, -(t.getLocY2()+15) + FrameHeight/2, 30,30, this);
+                t.sleep();
             }
         }
     }
@@ -200,6 +201,7 @@ public class Interpreter  extends JPanel implements ActionListener {
 
             if (redraw) repaint();
             lineNumber++;
+
         }
     }
 
@@ -208,7 +210,6 @@ public class Interpreter  extends JPanel implements ActionListener {
         JButton b = new JButton("Open Program File");
 
         Interpreter  p = new Interpreter();
-
 
         p.add(b);
         b.addActionListener(p);
