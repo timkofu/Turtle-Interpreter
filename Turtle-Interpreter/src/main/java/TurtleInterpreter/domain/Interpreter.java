@@ -13,19 +13,19 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.IOException;
 
-public class Interpreter  extends JPanel implements ActionListener {
+public class Interpreter extends JPanel implements ActionListener {
 
     private static final int FrameWidth = 800;
     private static final int FrameHeight = 800;
-    private LinkedList<Turtle> TurtleList;
+    private LinkedList<Turtle> turtleList;
     private final BufferedImage image;
     Scanner in = null;
     boolean redraw;
-    //   private JTextField console = new JTextField();
+    // private JTextField console = new JTextField();
 
     public Interpreter() {
-        //add(console);
-        TurtleList = new LinkedList<>();
+        // add(console);
+        turtleList = new LinkedList<>();
         setPreferredSize(new Dimension(FrameWidth, FrameHeight));
         image = new BufferedImage(FrameWidth, FrameHeight, BufferedImage.TYPE_INT_RGB);
         setMaximumSize(new Dimension(image.getWidth(), image.getHeight()));
@@ -53,38 +53,34 @@ public class Interpreter  extends JPanel implements ActionListener {
         super.paintComponent(g);
         // render the image on the panel.
         g.drawImage(image, 0, 0, null);
-        if (!TurtleList.isEmpty()) {
-            for (Turtle t: TurtleList) {
-                g.drawImage(t.getImage(), (t.getLocX2()-15) + FrameWidth/2, -(t.getLocY2()+15) + FrameHeight/2, 30,30, this);
-                t.sleep();
+        if (!turtleList.isEmpty()) {
+            for (Turtle t : turtleList) {
+                g.drawImage(t.getImage(), (t.getLocX2() - 15) + FrameWidth / 2, -(t.getLocY2() + 15) + FrameHeight / 2,
+                        30, 30, this);
             }
         }
     }
 
-
-    public void actionPerformed(ActionEvent e)
-    {
-        String s = e.getActionCommand();
-        if (s.equals("Open Program File")) {    // read input commands from a text file
+    public void actionPerformed(ActionEvent event) {
+        String s = event.getActionCommand();
+        if (s.equals("Open Program File")) { // read input commands from a text file
             JFileChooser chooser = new JFileChooser();
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = chooser.getSelectedFile();
                 try {
                     in = new Scanner(selectedFile);
                 } catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
                     System.err.println(e1.getMessage());
                 }
             }
-            // start over, clear screen and initialise Turtle List
+            // start over, clear screen and initialize Turtle List
             clear();
-            TurtleList = new LinkedList<>();
+            turtleList = new LinkedList<>();
             processFile(in);
         }
     }
 
-    public Color toColor(String s)
-    {
+    public Color toColor(String s) {
         // Only five colors are allowed
         return switch (s) {
             case "red" -> Color.RED;
@@ -101,19 +97,18 @@ public class Interpreter  extends JPanel implements ActionListener {
         boolean terminate = false;
         boolean done;
         final int MAX_LINES = 100; // maximum number of command lines
-        while (in.hasNextLine() && lineNumber<MAX_LINES && !terminate) {
+        while (in.hasNextLine() && lineNumber < MAX_LINES && !terminate) {
             String[] line = in.nextLine().split(" ");
-            if (line.length <2 || line.length >= 4) {
+            if (line.length < 2 || line.length >= 4) {
                 JOptionPane.showMessageDialog(this, "Line : " + lineNumber + " : Invalid command, Program Terminated");
-
                 terminate = true;
             } else {
-                Iterator<Turtle> itr = TurtleList.iterator();
+                Iterator<Turtle> itr = turtleList.iterator();
 
                 switch (line[0]) {
                     case "turtle":
                         Turtle turtle = new Turtle(line[1], 0, 0); // New Turtle in Turtle coordinates at center
-                        TurtleList.add(turtle);
+                        turtleList.add(turtle);
                         redraw = true;
                         break;
 
@@ -125,14 +120,16 @@ public class Interpreter  extends JPanel implements ActionListener {
                             if (name.equals(line[1])) {
                                 done = true;
                                 t.setDelta(Integer.parseInt(line[2]));
-                                t.MoveForward(t.getDelta(), FrameWidth/2, FrameHeight/2);
+                                t.MoveForward(t.getDelta(), FrameWidth / 2, FrameHeight / 2);
                                 if (t.getWriting()) {
-                                    drawLine(t, t.getLocX1() + FrameWidth/2, -t.getLocY1() + FrameHeight/2, t.getLocX2() + FrameWidth/2, -t.getLocY2() + FrameHeight/2);
+                                    drawLine(t, t.getLocX1() + FrameWidth / 2, -t.getLocY1() + FrameHeight / 2,
+                                            t.getLocX2() + FrameWidth / 2, -t.getLocY2() + FrameHeight / 2);
                                 }
                                 t.setLocX1(t.getLocX2()); // update Turtle position
                                 t.setLocY1(t.getLocY2());
                             }
                         }
+
                         redraw = true;
                         break;
 
@@ -147,6 +144,7 @@ public class Interpreter  extends JPanel implements ActionListener {
                                 t.rotateTurtle();
                             }
                         }
+
                         redraw = true;
                         break;
 
@@ -161,6 +159,7 @@ public class Interpreter  extends JPanel implements ActionListener {
                                 t.rotateTurtle();
                             }
                         }
+
                         redraw = true;
                         break;
 
@@ -177,6 +176,7 @@ public class Interpreter  extends JPanel implements ActionListener {
                                     t.penDown();
                             }
                         }
+
                         redraw = false;
                         break;
 
@@ -190,26 +190,30 @@ public class Interpreter  extends JPanel implements ActionListener {
                                 t.setColor(toColor(line[2])); // change color
                             }
                         }
+
                         redraw = false;
                         break;
 
                     default:
-                        JOptionPane.showMessageDialog(this, "Line " + lineNumber + " : Invalid command, Program Terminated");
+                        JOptionPane.showMessageDialog(this,
+                                "Line " + lineNumber + " : Invalid command, Program Terminated");
                         terminate = true;
                 }
             }
 
-            if (redraw) repaint();
+            if (redraw) {
+                repaint();
+            }
             lineNumber++;
 
         }
     }
 
-    public void run() throws IOException  {
+    public void run() throws IOException {
         JFrame f = new JFrame();
         JButton b = new JButton("Open Program File");
 
-        Interpreter  p = new Interpreter();
+        Interpreter p = new Interpreter();
 
         p.add(b);
         b.addActionListener(p);
@@ -220,6 +224,5 @@ public class Interpreter  extends JPanel implements ActionListener {
 
         f.setVisible(true);
     }
-
 
 }
